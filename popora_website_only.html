@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Popora — Everyday Finds</title>
+<style>
+:root{--ink:#202033;--muted:#707087;--pink:#ff5d8f;--pink2:#ffe7ef;--cream:#fffaf6;--line:#eee8e8;--green:#1d8b68}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink);background:#fff}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{cursor:pointer}
+.announcement{background:#25233a;color:white;text-align:center;padding:9px 12px;font-size:12px;letter-spacing:.3px}
+header{position:sticky;top:0;z-index:5;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{max-width:1180px;margin:auto;padding:16px 22px;display:flex;align-items:center;gap:24px}
+.logo{font-weight:950;font-size:28px;letter-spacing:-1.5px;color:#25233a;white-space:nowrap}.logo span{color:var(--pink)}
+.search{flex:1;position:relative}.search input{width:100%;padding:13px 16px 13px 42px;border:1px solid #e8e2e4;border-radius:14px;background:#faf8f9;outline:none}.search input:focus{border-color:var(--pink)}.search:before{content:"⌕";position:absolute;left:15px;top:5px;font-size:27px;color:var(--muted)}
+.nav-actions{display:flex;gap:10px;align-items:center}.nav-btn{border:1px solid var(--line);background:white;border-radius:12px;padding:10px 13px;font-weight:700}.cart-count{display:inline-grid;place-items:center;background:var(--pink);color:white;border-radius:50%;width:21px;height:21px;font-size:12px;margin-left:4px}
+main{max-width:1180px;margin:auto;padding:24px 22px 60px}
+.hero{background:linear-gradient(115deg,#fff0f5,#fff8ee 60%,#f2f0ff);border-radius:28px;padding:48px 42px;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;overflow:hidden;min-height:300px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#c23b6a;font-weight:850}.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.03;letter-spacing:-2.5px;margin:12px 0}.hero p{color:#666477;max-width:440px;line-height:1.65;margin-bottom:22px}.primary{border:0;background:var(--pink);color:white;padding:13px 19px;border-radius:12px;font-weight:800;box-shadow:0 8px 20px #ff5d8f30}.hero-art{font-size:clamp(70px,11vw,120px);display:flex;justify-content:center;align-items:center;gap:4px;transform:rotate(-5deg)}.hero-art span{filter:drop-shadow(0 12px 10px #6e39551c)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:34px 0 16px}.section-head h2{margin:0;font-size:25px;letter-spacing:-.7px}.section-head p{margin:5px 0 0;color:var(--muted);font-size:14px}
+.categories{display:flex;gap:10px;overflow-x:auto;padding:2px 0 10px}.category{border:1px solid var(--line);border-radius:999px;padding:10px 16px;background:#fff;white-space:nowrap;font-weight:750;color:#55546a}.category.active,.category:hover{background:var(--pink2);border-color:#ffc5d7;color:#b92c60}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:16px 0}.result-count{font-size:13px;color:var(--muted)}select{border:1px solid var(--line);padding:10px 12px;border-radius:10px;background:#fff;color:var(--ink)}
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.product{border:1px solid var(--line);border-radius:19px;overflow:hidden;background:white;transition:transform .18s,box-shadow .18s}.product:hover{transform:translateY(-3px);box-shadow:0 12px 28px #25233a10}.product-art{height:170px;display:grid;place-items:center;font-size:70px;position:relative}.product-art .tag{position:absolute;left:12px;top:12px;background:#fff;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:850;color:#4c4960}.product-body{padding:14px}.product-category{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:800}.product h3{font-size:15px;margin:7px 0 8px}.price-line{display:flex;align-items:center;gap:8px;margin-bottom:13px}.price{font-size:17px;font-weight:900}.old-price{font-size:12px;color:#999;text-decoration:line-through}.add{width:100%;padding:10px;border:1px solid #f8b7cc;background:#fff7fa;color:#bd3163;border-radius:10px;font-weight:800}.add:hover{background:var(--pink);color:white;border-color:var(--pink)}
+.empty{grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)}.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}.trust div{background:#faf8fa;border-radius:16px;padding:18px;text-align:center}.trust b{display:block;margin:7px 0}.trust span{font-size:13px;color:var(--muted)}
+footer{background:#25233a;color:white;padding:30px 22px}.footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:20px;align-items:center}.footer-inner p{font-size:13px;color:#c9c6d6;line-height:1.5}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#25233a;color:white;padding:12px 18px;border-radius:12px;box-shadow:0 10px 35px #0002;display:none;z-index:20;font-size:14px}
+.drawer-backdrop{position:fixed;inset:0;background:#18162466;z-index:10;display:none}.drawer{position:absolute;right:0;top:0;height:100%;width:min(420px,100%);background:white;padding:22px;overflow:auto;box-shadow:-10px 0 30px #0001}.drawer-head{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:#f6f2f4;border-radius:10px;padding:8px 12px}.cart-item{display:flex;gap:12px;padding:15px 0;border-bottom:1px solid var(--line);align-items:center}.cart-emoji{width:54px;height:54px;border-radius:12px;display:grid;place-items:center;font-size:28px;background:#fff0f5}.cart-info{flex:1}.cart-info b{display:block;font-size:14px}.cart-info small{color:var(--muted)}.qty{display:flex;gap:8px;align-items:center;margin-top:8px}.qty button{border:1px solid var(--line);background:white;border-radius:7px;width:25px;height:25px}.remove{border:0;background:transparent;color:#b33;font-size:12px}.cart-total{display:flex;justify-content:space-between;font-size:18px;font-weight:900;margin:20px 0}.checkout{width:100%;padding:14px;border:0;border-radius:12px;background:var(--green);color:white;font-weight:850}.note{font-size:12px;line-height:1.5;color:var(--muted)}
+#checkoutForm label{display:block;font-size:12px;font-weight:800;margin-bottom:6px;color:#385b4d}
+#checkoutForm input,#checkoutForm textarea,#checkoutForm select{width:100%;border:1px solid #ddd5db;background:#fff;border-radius:10px;padding:12px;outline:none}
+#checkoutForm textarea{min-height:78px;resize:vertical}
+.order-card{border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.order-card b{display:block;margin-bottom:6px}
+.order-card p{font-size:13px;color:var(--muted);line-height:1.5;margin:5px 0}
+@media(max-width:850px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.nav{gap:12px}.hero{padding:34px 26px}.hero-art{font-size:80px}}
+@media(max-width:620px){.nav{flex-wrap:wrap;padding:13px 15px}.logo{font-size:25px}.search{order:3;flex-basis:100%}.nav-actions{margin-left:auto}.nav-btn{padding:9px}.hero{grid-template-columns:1fr;padding:30px 22px;min-height:0}.hero-art{margin-top:10px;font-size:72px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.product-art{height:135px;font-size:57px}.product-body{padding:11px}.product h3{font-size:14px}.trust{grid-template-columns:1fr}.section-head h2{font-size:22px}.footer-inner{display:block}.toolbar{align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="announcement">✨ Little things, lovely prices — discover your everyday favourites</div>
+<header><div class="nav">
+<a class="logo" href="#" aria-label="Popora home">popora<span>.</span></a>
+<div class="search"><input id="search" type="search" placeholder="Search stationery, accessories, gifts..." aria-label="Search products"></div>
+<div class="nav-actions"><button class="nav-btn" id="homeBtn">Home</button><button class="nav-btn" id="ordersBtn">My demo orders</button><button class="nav-btn" id="cartBtn">🛍 Cart <span class="cart-count" id="cartCount">0</span></button></div>
+</div></header>
+<main>
+<section class="hero">
+<div><div class="eyebrow">Your happy little marketplace</div><h1>Good finds.<br>Great everyday.</h1><p>From cute stationery to everyday accessories and thoughtful gifts — find little things that make your day better.</p><button class="primary" id="shopNow">Explore products&nbsp; →</button></div>
+<div class="hero-art" aria-hidden="true"><span>📒</span><span>🎀</span><span>🧸</span></div>
+</section>
+<div class="section-head"><div><h2>Shop by category</h2><p>A little something for every mood.</p></div></div>
+<div class="categories" id="categories"></div>
+<div class="section-head"><div><h2 id="productsHeading">Popular picks</h2><p>Demo products to get your store started.</p></div></div>
+<div class="toolbar"><span class="result-count" id="resultCount"></span><select id="sort" aria-label="Sort products"><option value="featured">Sort: Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option></select></div>
+<section class="products" id="products"></section>
+<section class="trust">
+<div>📦<b>Easy shopping</b><span>Browse products in one place</span></div>
+<div>💝<b>Everyday favourites</b><span>Useful things, fun little finds</span></div>
+<div>🔒<b>Secure launch checklist</b><span>Connect real payments before selling</span></div>
+</section>
+</main>
+<footer><div class="footer-inner"><div><a class="logo" href="#" style="color:white">popora<span>.</span></a><p>Everyday finds, all in one happy place.</p></div><p>Demo storefront • Sample products and prices<br>© <span id="year"></span> Popora</p></div></footer>
+
+<div class="drawer-backdrop" id="checkoutBackdrop" style="display:none;z-index:30"><section class="drawer" style="max-width:520px" aria-label="Website checkout">
+<div class="drawer-head"><h2>Checkout</h2><button class="close" id="closeCheckout">✕ Close</button></div>
+<p class="note">Place your order directly on Popora. No WhatsApp is used. This demo saves orders only in this browser on this device.</p>
+<form id="checkoutForm" class="whatsapp-form" style="display:grid;grid-template-columns:1fr;gap:12px">
+<div><label for="customerName">Full name *</label><input id="customerName" required autocomplete="name" placeholder="Your full name"></div>
+<div><label for="customerPhone">Mobile number *</label><input id="customerPhone" required inputmode="tel" autocomplete="tel" pattern="[0-9+() -]{8,18}" placeholder="Your contact number"></div>
+<div><label for="customerAddress">Delivery address *</label><textarea id="customerAddress" required autocomplete="street-address" placeholder="House/flat, street, area"></textarea></div>
+<div><label for="customerCity">City / town *</label><input id="customerCity" required autocomplete="address-level2" placeholder="City or town"></div>
+<div><label for="customerPin">PIN code *</label><input id="customerPin" required inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit PIN code"></div>
+<div><label for="customerPayment">Payment preference *</label><select id="customerPayment" required><option value="">Choose payment preference</option><option value="Cash on delivery (confirm first)">Cash on delivery (confirm first)</option><option value="Pay after seller confirms order">Pay after seller confirms order</option></select></div>
+<button class="checkout" type="submit">Place order on website</button>
+</form>
+<p class="note">Demo limitations: no real payment is collected, no email/SMS is sent, and this local order list is not visible to the shop owner on another device. Do not use real customer information for testing.</p>
+</section></div>
+<div class="drawer-backdrop" id="ordersBackdrop" style="display:none;z-index:30"><section class="drawer" style="max-width:560px" aria-label="Demo order records">
+<div class="drawer-head"><h2>Order records (this device)</h2><button class="close" id="closeOrders">✕ Close</button></div>
+<p class="note">Demo order records are stored in this browser only. They are not sent to a server or shared with the shop owner on another device.</p>
+<div id="ordersList"></div>
+</section></div>
+
+<div class="toast" id="toast" role="status"></div>
+<div class="drawer-backdrop" id="backdrop"><aside class="drawer" aria-label="Shopping cart"><div class="drawer-head"><h2>Your cart</h2><button class="close" id="closeCart">✕ Close</button></div><div id="cartItems"></div><div id="cartSummary"></div></aside></div>
+<script>
+const productsData=[
+{id:1,name:"Pastel Study Notebook Set",category:"Stationery",price:149,old:199,emoji:"📒",bg:"#fff0d9",tag:"Bestseller"},
+{id:2,name:"Colour Pop Gel Pens",category:"Stationery",price:99,old:129,emoji:"🖊️",bg:"#e8f5ff",tag:"Under ₹100"},
+{id:3,name:"Weekly Study Planner",category:"Stationery",price:129,old:179,emoji:"🗓️",bg:"#f1eaff",tag:"Student pick"},
+{id:4,name:"Cute Sticky Notes Pack",category:"Stationery",price:79,old:99,emoji:"🗒️",bg:"#fff3bf",tag:"Popular"},
+{id:5,name:"Everyday Claw Clip Set",category:"Accessories",price:119,old:159,emoji:"🎀",bg:"#ffe7ee",tag:"Trending"},
+{id:6,name:"Minimal Hoop Earrings",category:"Accessories",price:179,old:249,emoji:"💫",bg:"#fff0d9",tag:"New"},
+{id:7,name:"Charm Bracelet",category:"Accessories",price:149,old:199,emoji:"📿",bg:"#f5eaff",tag:"Gift idea"},
+{id:8,name:"Mini Makeup Pouch",category:"Accessories",price:199,old:249,emoji:"👝",bg:"#ffe9dc",tag:"Everyday"},
+{id:9,name:"Pocket Mirror",category:"Beauty & Care",price:89,old:119,emoji:"🪞",bg:"#e7f6f0",tag:"Under ₹100"},
+{id:10,name:"Soft Makeup Headband",category:"Beauty & Care",price:99,old:139,emoji:"🧖‍♀️",bg:"#ffe7ef",tag:"Popular"},
+{id:11,name:"Mini Plush Keychain",category:"Gifts",price:129,old:169,emoji:"🧸",bg:"#fff0d9",tag:"Cute find"},
+{id:12,name:"Gift Wrap & Card Kit",category:"Gifts",price:109,old:149,emoji:"🎁",bg:"#e8f5ff",tag:"Gift idea"}
+];
+const categories=["All","Stationery","Accessories","Beauty & Care","Gifts"];
+let activeCategory="All", cart={}, searchText="";
+const $=id=>document.getElementById(id);
+function money(n){return "₹"+n.toLocaleString("en-IN")}
+function renderCategories(){$("categories").innerHTML=categories.map(c=>`<button class="category ${activeCategory===c?"active":""}" data-category="${c}">${c==="All"?"✨":c==="Stationery"?"📚":c==="Accessories"?"🎀":c==="Beauty & Care"?"🪞":"🎁"} ${c}</button>`).join("");document.querySelectorAll("[data-category]").forEach(b=>b.onclick=()=>{activeCategory=b.dataset.category;renderCategories();renderProducts()})}
+function visibleProducts(){let list=productsData.filter(p=>(activeCategory==="All"||p.category===activeCategory)&&(`${p.name} ${p.category}`.toLowerCase().includes(searchText.toLowerCase())));if($("sort").value==="low")list.sort((a,b)=>a.price-b.price);if($("sort").value==="high")list.sort((a,b)=>b.price-a.price);return list}
+function renderProducts(){let list=visibleProducts();$("productsHeading").textContent=activeCategory==="All"?"Popular picks":activeCategory;$("resultCount").textContent=`${list.length} product${list.length===1?"":"s"}`;$("products").innerHTML=list.length?list.map(p=>`<article class="product"><div class="product-art" style="background:${p.bg}"><span class="tag">${p.tag}</span><span>${p.emoji}</span></div><div class="product-body"><div class="product-category">${p.category}</div><h3>${p.name}</h3><div class="price-line"><span class="price">${money(p.price)}</span><span class="old-price">${money(p.old)}</span></div><button class="add" data-add="${p.id}">＋ Add to cart</button></div></article>`).join(""):`<div class="empty">No products found. Try another search or category.</div>`;document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>addToCart(Number(b.dataset.add)))}
+function addToCart(id){cart[id]=(cart[id]||0)+1;updateCartCount();showToast("Added to your cart!");}
+function updateCartCount(){$("cartCount").textContent=Object.values(cart).reduce((a,b)=>a+b,0)}
+function renderCart(){const entries=Object.entries(cart);if(!entries.length){$("cartItems").innerHTML='<div class="empty">Your cart is empty.<br>Find something you love ✨</div>';$("cartSummary").innerHTML="";return}let total=0;$("cartItems").innerHTML=entries.map(([id,qty])=>{const p=productsData.find(x=>x.id===Number(id));total+=p.price*qty;return `<div class="cart-item"><div class="cart-emoji" style="background:${p.bg}">${p.emoji}</div><div class="cart-info"><b>${p.name}</b><small>${money(p.price)} each</small><div class="qty"><button data-qty="${id}" data-delta="-1">−</button><span>${qty}</span><button data-qty="${id}" data-delta="1">+</button></div></div><button class="remove" data-remove="${id}">Remove</button></div>`}).join("");$("cartSummary").innerHTML=`<div class="cart-total"><span>Subtotal</span><span>${money(total)}</span></div><button class="checkout" id="checkout">Continue to checkout</button><p class="note">Demo only: checkout and payments are not connected yet. Add your business details, shipping rules, and a trusted payment provider before accepting real orders.</p>`;document.querySelectorAll("[data-qty]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.qty);cart[id]=(cart[id]||0)+Number(b.dataset.delta);if(cart[id]<=0)delete cart[id];updateCartCount();renderCart()});document.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{delete cart[Number(b.dataset.remove)];updateCartCount();renderCart()});$("checkout").onclick=()=>{closeCart();openCheckout();};}
+function openCart(){$("backdrop").style.display="block";renderCart()}function closeCart(){$("backdrop").style.display="none"}
+let toastTimer;function showToast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display="none",2200)}
+$("search").addEventListener("input",e=>{searchText=e.target.value;renderProducts()});$("sort").onchange=renderProducts;$("cartBtn").onclick=openCart;$("closeCart").onclick=closeCart;$("backdrop").onclick=e=>{if(e.target===$("backdrop"))closeCart()};$("homeBtn").onclick=()=>{activeCategory="All";searchText="";$("search").value="";renderCategories();renderProducts();window.scrollTo({top:0,behavior:"smooth"})};$("shopNow").onclick=()=>$("products").scrollIntoView({behavior:"smooth",block:"start"});const ORDERS_KEY="popora_demo_orders_v1";
+function readOrders(){try{return JSON.parse(localStorage.getItem(ORDERS_KEY)||"[]")}catch(e){return []}}
+function openCheckout(){
+ if(!Object.keys(cart).length){showToast("Your cart is empty.");return;}
+ $("checkoutBackdrop").style.display="block";
+}
+function closeCheckout(){$("checkoutBackdrop").style.display="none"}
+function openOrders(){
+ const orders=readOrders();
+ $("ordersList").innerHTML=orders.length?orders.slice().reverse().map(o=>`<div class="order-card"><b>Order ${o.id}</b><p>Placed: ${o.date}</p><p>${o.items.map(i=>`${i.name} × ${i.qty}`).join("<br>")}</p><p><strong>Total: ${money(o.total)}</strong></p><p>Status: ${o.status}</p><p>Delivery: ${o.city}, PIN ${o.pin}</p></div>`).join(""):'<div class="empty">No demo orders placed on this browser yet.</div>';
+ $("ordersBackdrop").style.display="block";
+}
+$("closeCheckout").onclick=closeCheckout;
+$("checkoutBackdrop").onclick=e=>{if(e.target===$("checkoutBackdrop"))closeCheckout()};
+$("ordersBtn").onclick=openOrders;
+$("closeOrders").onclick=()=>$("ordersBackdrop").style.display="none";
+$("ordersBackdrop").onclick=e=>{if(e.target===$("ordersBackdrop"))$("ordersBackdrop").style.display="none"};
+$("checkoutForm").onsubmit=e=>{
+ e.preventDefault();
+ const entries=Object.entries(cart);
+ if(!entries.length){closeCheckout();showToast("Your cart is empty.");return;}
+ const items=entries.map(([id,qty])=>{const p=productsData.find(x=>x.id===Number(id));return {id:p.id,name:p.name,price:p.price,qty};});
+ const total=items.reduce((sum,i)=>sum+i.price*i.qty,0);
+ const orders=readOrders();
+ const order={id:"POP-"+Date.now().toString().slice(-8),date:new Date().toLocaleString(),items,total,status:"Received in this browser demo — seller has not been notified",name:$("customerName").value.trim(),phone:$("customerPhone").value.trim(),address:$("customerAddress").value.trim(),city:$("customerCity").value.trim(),pin:$("customerPin").value.trim(),payment:$("customerPayment").value};
+ orders.push(order);
+ try{localStorage.setItem(ORDERS_KEY,JSON.stringify(orders));}
+ catch(err){showToast("Could not save order in this browser. Try again.");return;}
+ cart={};updateCartCount();closeCheckout();renderCart();e.target.reset();
+ $("toast").textContent="Demo order placed: "+order.id+". No seller notification or payment was made.";
+ $("toast").style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").style.display="none",5000);
+};
+$("year").textContent=new Date().getFullYear();renderCategories();renderProducts();
+</script>
+</body>
+</html>
